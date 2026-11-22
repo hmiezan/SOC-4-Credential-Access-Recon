@@ -15,70 +15,68 @@ The activity is consistent with credential-access reconnaissances and process di
 
 ### Attack Timeline
 
-2026-11-07-- 09-04.57.412 (UTC-6) -- Multiple failed authentication attempts detected(4625)
-2026-11-07-- 09-04.57.480 (UTC-6) -- Additional authentication failures observed (4625)
-2026-11-07-- 09-04.57.533 (UTC-6) -- Successful network logon detected (4624)
-2026-11-07-- 09-15.57.535 (UTC-6) -- SMB share access detected on multiple time (5140)
+2026-11-21-- 22-32.57 (UTC-6) -- Successful renote connection established
+2026-11-21-- 22-32.57 (UTC-6) -- Windows Remote Management provider launched
+2026-11-21-- 22-33.12 (UTC-6) -- host Discovery performed
+2026-11-21-- 22-33.34 (UTC-6) -- Authentication-Related Process Enumration
+2026-11-21-- 22-33.42 (UTC-6) -- LSASS Identified
 
 ### Investigation findings
 
 Source IP : 10.161.170.22
-Target Accounts victim.user and finance.jane
+Target Accounts victim.user
 Host Targeted : WLAB01
 Logon Type : 3-Network Logon
+Evil WinRM : C:\users\victim.user\Documents
 
 Observations
 
-- Multiple authentication failures detected
-- Successful authentication observed
-- Evidence consistent with Password Spraying
-- Indicator of compromise (IOC) ( victim.user, Finance.jane, Event ID 4626/5140)
+- Successful Remote Host machine and session 4624
+- Successful enumarate LSASS for preparation
+- Indicator of compromise (IOC) ( victim.user)
 
 ### Evidence
 
-#### Attack from kali (Reconnaissance)
-- <img width="1272" height="568" alt="Kali- Reconnaissance _spraying" src="https://github.com/user-attachments/assets/219a08a8-86ca-4e73-a7fc-a3b21cda64a9" />
+#### Attack from kali (Evil-WinRM-Success access)
+- <img width="963" height="806" alt="Kali EvilRM command" src="https://github.com/user-attachments/assets/b833e444-a37e-4a96-a0fc-e5284b0f0a39" />
 
-#### Elastic Discovery
-- <img width="1666" height="842" alt="4624-Failed Login" src="https://github.com/user-attachments/assets/44f1c575-b8f1-4938-80a1-64a08fd7b060" />
+#### Successfully access- Process-parent- Process Discovery
+- <img width="1912" height="885" alt="Remote Powershell" src="https://github.com/user-attachments/assets/adf8f0c7-f76b-44ad-af21-e7bca029f2fa" />
 
-#### Attack from kali (Reconnaissance-Confirmed) --Account compromised
+- <img width="1880" height="849" alt="Evidence Process-parent After WinRMM" src="https://github.com/user-attachments/assets/0d50952b-d2cb-441b-b95f-52cd0540fb29" />
 
-- <img width="1256" height="381" alt="Kali-Reconnaissance- Confirmed 2" src="https://github.com/user-attachments/assets/8e39b8d5-f91b-45a1-a1e4-5fb94f0f4819" />
+#### Confirmation remote access from Elastic
+- <img width="1903" height="883" alt="Parent Process" src="https://github.com/user-attachments/assets/20d8338c-5a19-4967-8b2e-cfb4673668f7" />
+
 #### Elastic Discovery
 <img width="1911" height="856" alt="4625-Success Login-account compromise" src="https://github.com/user-attachments/assets/36804550-090f-4911-b0ff-366d2d1c2100" />
 
-### Network Share Access
-
-#### Discovery from kali
-<img width="1254" height="481" alt="Kali- Discovery" src="https://github.com/user-attachments/assets/bbb46af6-2ab0-465b-97d1-1fc66f4b15bd" />
-<img width="1265" height="509" alt="Kali-Discovery users account" src="https://github.com/user-attachments/assets/046cf9f3-a7d9-4acb-b764-1225dc77ce03" />
-
-#### Elastic Discovery
-<img width="1723" height="728" alt="5140-SMB enuration -ShareNetwork Object" src="https://github.com/user-attachments/assets/de692aba-e2a4-4ef5-9562-dfe6d53e17db" />
-
 
 #### MITRE ATT&CK Mapping
-- Tactic (Brute Force)- IDPassword Spraying :	T1110.003 
-- Tactic (Initial Access) - Technique (Valid Accounts): T1078
-- Tactic (Discovery)- Technique (Network Share Discovery): T1135
+- Tactic (Initial Access)- Valid Accounts :	T1078 
+- Tactic (Lateral Movement) - Technique (WinRM): T1021.006
+- Tactic (Execution)- Technique (Command and Scripting Interpreter: PowerShell): T1059.001
+- Tactic (Discovery)- Technique (Process Discovery): T1057
+- Tactic (Discovery)- Technique (System Owner/User Discovery): T1033
+- Tactic (Credential Access)- OS Credential Dumping (Reconnaissance Stage): T1003
 
 
 #### Impact Assessment
 
-Successful authentication was observed after multiple failed attempts. Potential  access to shared resoucres with no evidence of modification activity or service disruption.This should be level as High 
+Successful remote access  has been confirmed. Credential Access techniques were investigated but not successfully executed.This should be level as High 
 
 #### Recommendations
-- Reset affected user credential
-- Implement Multi-Factor Authentication (MFA).
-- Review SMB permissions.
-- Enable account lockout policies.
-- Monitor Event IDs 4624 and 5140.
+- Enable Microsoft Defender Credential Guard to better protect authentication-related secrets.
+- Enable LSASS Protected Process (RunAsPPL) to increase protection of authentication services.
+- Monitor WinRM activity and investigate unexpected executions of wsmprovhost.exe.
+- Enable PowerShell Script Block Logging and Module Logging to improve visibility into remote command execution.
+- Restrict WinRM access to approved administrative systems and users.
+- Implement Multi-Factor Authentication (MFA) to reduce the impact of compromised credentials.
+- Review privileged group memberships and remove unnecessary administrative permissions.
 
 #### Lessons Learned
 
-This investigation demonstrated the importance of correlating Windows authentication events and SMB access events to understand attacker behavior following successful authentication.
-Combining Event IDs 4624 and 5140 enabled identification of post-compromise discovery activity and improved visibility into attacker actions.
+This investigation demonstrated that emote PowerShell activity can be identified through WinRM-specific processes such as wsmprovhost.exe and parent-child process relationships provide valuable context when investigating remote command execution and enumeration of LSASS and other authentication-related processes may indicate preparation for credential theft.Not all credential-access investigations result in credential theft; distinguishing reconnaissance from actual credential extraction is essential for accurate incident classification.
 
 #### Incident Report
 <a href="https://1drv.ms/w/c/b5bf0dbc64611adf/IQBk2bTttjH5RrJrtzFHAtmpAWU5O3I2Uo9Fkk4fK-pqyVA?e=mEQvYs">See report </a>">See report </a>
