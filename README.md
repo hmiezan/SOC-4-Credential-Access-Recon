@@ -41,13 +41,14 @@ Observations
 #### Attack from kali (Evil-WinRM-Success access)
 - <img width="963" height="806" alt="Kali EvilRM command" src="https://github.com/user-attachments/assets/b833e444-a37e-4a96-a0fc-e5284b0f0a39" />
 
+#### Confirmation WinRM
+- <img width="1903" height="883" alt="Parent Process" src="https://github.com/user-attachments/assets/20d8338c-5a19-4967-8b2e-cfb4673668f7" />
+
 #### Successfully access- Process-parent- Process Discovery
 - <img width="1912" height="885" alt="Remote Powershell" src="https://github.com/user-attachments/assets/adf8f0c7-f76b-44ad-af21-e7bca029f2fa" />
 
 - <img width="1880" height="849" alt="Evidence Process-parent After WinRMM" src="https://github.com/user-attachments/assets/0d50952b-d2cb-441b-b95f-52cd0540fb29" />
 
-#### Confirmation remote access from Elastic
-- <img width="1903" height="883" alt="Parent Process" src="https://github.com/user-attachments/assets/20d8338c-5a19-4967-8b2e-cfb4673668f7" />
 
 
 #### MITRE ATT&CK Mapping
