@@ -1,6 +1,7 @@
-# SOC-4--Credential Access Recon
+# SOC-4--Credential Access Reconnaissance
 
-This investigation follows a previously identified reconnaisscance using powershell on  a Windows 11 endpoint.
+Following successful authentication, SMB discovery, and PowerShell reconnaissance, an attacker established a remote WinRM session and performed reconnaissance against authentication-related Windows processes.
+The objective of this investigation was to identify indicators of credential-access activity and determine whether credential theft occurred.
 
 ### Lab Environment
 - Kali Linux 10.161.170.22
@@ -9,17 +10,16 @@ This investigation follows a previously identified reconnaisscance using powersh
 - Elastic Agent Installed
 
 ### Incident Summary
-Investigation identified remote WInRMM activiyt using valid credentials.During the session, authentication-related windwos processes, including LSASS, werer enumerated using process discovery command.
-The activity is consistent with credential-access reconnaissances and process discovery
+Investigation identified a remote WinRM session established using valid credentials. During the session, authentication-related Windows processes, including LSASS, were enumerated using process discovery commands.
+The observed activity is consistent with credential-access reconnaissance and process discovery behavior. No evidence of credential dumping or credential extraction was identified.
 
 
 ### Attack Timeline
 
 2026-11-21-- 22-32.57 (UTC-6) -- Successful renote connection established
-2026-11-21-- 22-32.57 (UTC-6) -- Windows Remote Management provider launched
-2026-11-21-- 22-33.12 (UTC-6) -- host Discovery performed
-2026-11-21-- 22-33.34 (UTC-6) -- Authentication-Related Process Enumration
-2026-11-21-- 22-33.42 (UTC-6) -- LSASS Identified
+2026-11-21-- 22-32.57 (UTC-6) -- Windows Remote Management provider launched (Wsmprovhost.exe)
+2026-11-21-- 22-33.12 (UTC-6) -- user Discovery performed(Whoami.exe /priv)
+2026-11-21-- 22-33.42 (UTC-6) -- LSASS process enumeration identified (findstr.exe)
 
 ### Investigation findings
 
@@ -31,8 +31,9 @@ Evil WinRM : C:\users\victim.user\Documents
 
 Observations
 
-- Successful Remote Host machine and session 4624
+- Successful Remote WinRM session established
 - Successful enumarate LSASS for preparation
+- Process discovery activity identified
 - Indicator of compromise (IOC) ( victim.user)
 
 ### Evidence
@@ -48,9 +49,6 @@ Observations
 #### Confirmation remote access from Elastic
 - <img width="1903" height="883" alt="Parent Process" src="https://github.com/user-attachments/assets/20d8338c-5a19-4967-8b2e-cfb4673668f7" />
 
-#### Elastic Discovery
-<img width="1911" height="856" alt="4625-Success Login-account compromise" src="https://github.com/user-attachments/assets/36804550-090f-4911-b0ff-366d2d1c2100" />
-
 
 #### MITRE ATT&CK Mapping
 - Tactic (Initial Access)- Valid Accounts :	T1078 
@@ -63,7 +61,8 @@ Observations
 
 #### Impact Assessment
 
-Successful remote access  has been confirmed. Credential Access techniques were investigated but not successfully executed.This should be level as High 
+Remote access was successfully established using valid credentials. Enumeration of authentication-related processes was observed, including LSASS reconnaissance.
+This should be level as High 
 
 #### Recommendations
 - Enable Microsoft Defender Credential Guard to better protect authentication-related secrets.
