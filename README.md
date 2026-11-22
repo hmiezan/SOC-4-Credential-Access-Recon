@@ -16,18 +16,18 @@ The observed activity is consistent with credential-access reconnaissance and pr
 
 ### Attack Timeline
 
-2026-11-21-- 22-32.57 (UTC-6) -- Successful renote connection established
-2026-11-21-- 22-32.57 (UTC-6) -- Windows Remote Management provider launched (Wsmprovhost.exe)
-2026-11-21-- 22-33.12 (UTC-6) -- user Discovery performed(Whoami.exe /priv)
-2026-11-21-- 22-33.42 (UTC-6) -- LSASS process enumeration identified (findstr.exe)
+- 2026-11-21-- 22-32.57 (UTC-6) -- Successful renote connection established
+- 2026-11-21-- 22-32.57 (UTC-6) -- Windows Remote Management provider launched (Wsmprovhost.exe)
+- 2026-11-21-- 22-33.12 (UTC-6) -- user Discovery performed(Whoami.exe /priv)
+- 2026-11-21-- 22-33.42 (UTC-6) -- LSASS process enumeration identified (findstr.exe)
 
 ### Investigation findings
 
-Source IP : 10.161.170.22
-Target Accounts victim.user
-Host Targeted : WLAB01
-Logon Type : 3-Network Logon
-Evil WinRM : C:\users\victim.user\Documents
+- Source IP : 10.161.170.22
+- Target Accounts victim.user
+- Host Targeted : WLAB01
+- Logon Type : 3-Network Logon
+- Evil WinRM : C:\users\victim.user\Documents
 
 Observations
 
