@@ -76,7 +76,7 @@ This should be level as High
 
 #### Lessons Learned
 
-This investigation demonstrated that emote PowerShell activity can be identified through WinRM-specific processes such as wsmprovhost.exe and parent-child process relationships provide valuable context when investigating remote command execution and enumeration of LSASS and other authentication-related processes may indicate preparation for credential theft.Not all credential-access investigations result in credential theft; distinguishing reconnaissance from actual credential extraction is essential for accurate incident classification.
+This investigation demonstrated that remote PowerShell activity can be identified through WinRM-specific processes such as wsmprovhost.exe and parent-child process relationships provide valuable context when investigating remote command execution and enumeration of LSASS and other authentication-related processes may indicate preparation for credential theft.Not all credential-access investigations result in credential theft; distinguishing reconnaissance from actual credential extraction is essential for accurate incident classification.
 
 #### Incident Report
 <a href="https://1drv.ms/w/c/b5bf0dbc64611adf/IQBvg_N3IWZwT40t3vgmkuHPAQsMypkFkggWrfdCncaPVTM?e=03S2B9">See report </a>
